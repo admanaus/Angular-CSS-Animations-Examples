@@ -1,46 +1,80 @@
-<h2>Advanced <code>animate.enter</code> Examples</h2>
+<h2>Advanced <code>animate.enter</code> & <code>animate.leave</code> Examples</h2>
 
 <div class="controls">
-  <button type="button" (click)="toggleList()">Toggle List</button>
   <button type="button" (click)="toggleCards()">Toggle Cards</button>
-  <button type="button" (click)="addItem()">Add Item</button>
 </div>
 
-<!-- Staggered List Animation -->
-<h3>Staggered List Animation</h3>
-@if (showList()) {
-  <ul class="animated-list">
-    @for (item of items(); track item; let i = $index) {
-      <li animate.enter="stagger-animation" [style.animation-delay]="i * 0.1 + 's'">
-        {{ item }}
-        <button (click)="removeItem(i)" class="remove-btn">×</button>
-      </li>
-    }
-  </ul>
-}
-
 <!-- Card Grid Animation -->
-<h3>Card Grid Animation</h3>
-@if (showCards()) {
-  <div class="card-grid">
-    @for (item of items(); track item; let i = $index) {
-      <div class="card" animate.enter="card-animation" [style.animation-delay]="i * 0.15 + 's'">
+<h3>Card Grid Animation (Asymmetric Enter/Leave)</h3>
+<div class="card-grid">
+  @for (item of items(); track item; let i = $index) {
+    <!-- Show card if cards are visible AND not being removed -->
+    @if (showCards() && !removingItems().has(i)) {
+      <div class="card" 
+           animate.enter="card-enter"
+           [style.animation-delay]="i * 0.15 + 's'">
         <h4>{{ item }}</h4>
-        <p>This is a card with enter animation</p>
+        <p>Different enter and leave animations</p>
+        <button (click)="removeItem(i)" class="card-remove-btn">Remove</button>
       </div>
     }
-  </div>
-}
+    <!-- Show card being removed with leave animation -->
+    @if (showCards() && removingItems().has(i)) {
+      <div class="card"
+           animate.leave="card-leave"
+           [style.animation-delay]="i * 0.1 + 's'">
+        <h4>{{ item }}</h4>
+        <p>REMOVING... (leave animation)</p>
+        <button disabled class="card-remove-btn">Remove</button>
+      </div>
+    }
+  }
+</div>
 
 <!-- Dynamic Items with Different Animations -->
-<h3>Dynamic Items</h3>
+<h3>Dynamic Items (Multiple Animation Types)</h3>
 <div class="dynamic-container">
   @for (item of items(); track item; let i = $index) {
-    <div 
-      class="dynamic-item" 
-      [animate.enter]="i % 3 === 0 ? 'slide-animation' : i % 3 === 1 ? 'fade-animation' : 'bounce-animation'"
-      [style.animation-delay]="i * 0.1 + 's'">
-      {{ item }}
-    </div>
+    <!-- Show item if not being removed -->
+    @if (!removingItems().has(i)) {
+      <div 
+        class="dynamic-item" 
+        [animate.enter]="getEnterAnimation(i)"
+        [style.animation-delay]="i * 0.1 + 's'">
+        {{ item }}
+        <button (click)="removeItem(i)" class="dynamic-remove-btn">×</button>
+      </div>
+    }
+    <!-- Show item being removed with leave animation -->
+    @if (removingItems().has(i)) {
+      <div 
+        class="dynamic-item" 
+        [animate.leave]="getLeaveAnimation(i)"
+        [style.animation-delay]="i * 0.05 + 's'">
+        {{ item }} <small>(REMOVING...)</small>
+        <button disabled class="dynamic-remove-btn">×</button>
+      </div>
+    }
   }
+</div>
+
+<!-- Sequence Animation Demo -->
+<h3>Sequential Animation Demo</h3>
+<div class="sequence-demo">
+  <button (click)="triggerSequence()" [disabled]="sequenceRunning()">
+    {{ sequenceRunning() ? 'Animation Running...' : 'Start Sequence' }}
+  </button>
+  
+  <div class="sequence-container">
+    @for (step of sequenceSteps(); track step.id; let i = $index) {
+      @if (step.visible) {
+        <div class="sequence-item"
+             animate.enter="sequence-enter"
+             animate.leave="sequence-leave"
+             [style.animation-delay]="i * 0.2 + 's'">
+          Step {{ step.id }}
+        </div>
+      }
+    }
+  </div>
 </div>

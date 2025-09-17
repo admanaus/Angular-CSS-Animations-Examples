@@ -1,20 +1,47 @@
-<h2><code>animate.enter</code> Examples</h2>
-<button type="button" (click)="toggle()">Toggle Element</button>
+<h2><code>animate.enter</code> & <code>animate.leave</code> Examples</h2>
+<button type="button" (click)="toggle()">Toggle Elements</button>
 
 @if (isShown()) {
-<div class="enter-container" animate.enter="slide-fade-animation">
-    <p>Slide & Fade Animation</p>
-</div>
+  <div class="animation-container" 
+       animate.enter="slide-fade-enter" 
+       animate.leave="slide-fade-leave">
+      <p>Slide & Fade Animation</p>
+      <small>Slides in from bottom, slides out to top</small>
+  </div>
+}
 
-<div class="enter-container" animate.enter="scale-animation">
-    <p>Scale Animation</p>
-</div>
+@if (isShown()) {
+  <div class="animation-container" 
+       animate.enter="scale-enter" 
+       animate.leave="scale-leave">
+      <p>Scale Animation</p>
+      <small>Scales in from small, scales out to large</small>
+  </div>
+}
 
-<div class="enter-container" animate.enter="bounce-animation">
-    <p>Bounce Animation</p>
-</div>
+@if (isShown()) {
+  <div class="animation-container" 
+       animate.enter="bounce-enter" 
+       animate.leave="bounce-leave">
+      <p>Bounce Animation</p>
+      <small>Bounces in, bounces out with rotation</small>
+  </div>
+}
 
-<div class="enter-container" animate.enter="rotate-animation">
-    <p>Rotate & Fade Animation</p>
-</div>
+@if (isShown()) {
+  <div class="animation-container" 
+       animate.enter="rotate-enter" 
+       animate.leave="rotate-leave">
+      <p>Rotate & Fade Animation</p>
+      <small>Rotates in from left, rotates out to right</small>
+  </div>
+}
+
+@if (isShown()) {
+  <div class="animation-container" 
+       animate.enter="flip-enter" 
+       animate.leave="flip-leave">
+      <p>Flip Animation</p>
+      <small>Flips in on Y-axis, flips out on X-axis</small>
+  </div>
 }
