@@ -1,0 +1,23 @@
+nav {
+  background: #333;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin-right: 2rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+nav a:hover,
+nav a.active {
+  background: #007acc;
+}
+
+main {
+  padding: 0 2rem;
+}
